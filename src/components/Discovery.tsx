@@ -301,12 +301,12 @@ export function Discovery() {
       return;
     }
     audio.current?.pause();
-    spotifyPlayer.current?.close();
     if (track.source === "spotify") {
       setPlaying(null);
       spotifyPlayer.current?.play(track.id);
       return;
     }
+    spotifyPlayer.current?.close();
     if (!track.preview) return;
     const player = new Audio(track.preview);
     audio.current = player;
@@ -770,6 +770,23 @@ export function Discovery() {
               </button>
               <p>{lastRequest}</p>
             </div>
+            {photo && !lastSeed && (
+              <div className="results-photo">
+                <img
+                  src={photo.data}
+                  alt="Your uploaded image, alongside its soundtrack suggestions"
+                  width={112}
+                  height={112}
+                />
+                <div>
+                  <span className="eyebrow">YOUR VISUAL STARTING POINT</span>
+                  <p>Keep the image in mind as you listen.</p>
+                  <button className="text-button" onClick={refine}>
+                    Shape the mood <ArrowUpRight size={13} />
+                  </button>
+                </div>
+              </div>
+            )}
             <div className="results-intro">
               <div>
                 <p className="eyebrow">02 / YOUR NEXT FINDS</p>
@@ -805,11 +822,6 @@ export function Discovery() {
                         else delete next[track.id];
                         return next;
                       })
-                    }
-                    coverBrief={
-                      prompt.trim().length >= 8
-                        ? prompt
-                        : "Original abstract cover with warm organic shapes, beautiful texture and a bold graphic composition."
                     }
                     coverPhoto={photo?.data}
                     onListen={() => void listen(track)}
@@ -950,7 +962,6 @@ function TrackCard({
   pending,
   customCover,
   onCover,
-  coverBrief,
   coverPhoto,
   onListen,
   onSave,
@@ -963,7 +974,6 @@ function TrackCard({
   pending: boolean;
   customCover: string | null;
   onCover: (artwork: string | null) => void;
-  coverBrief: string;
   coverPhoto?: string;
   onListen: () => void;
   onSave: () => void;
@@ -971,16 +981,24 @@ function TrackCard({
 }) {
   const [makingCover, setMakingCover] = useState(false);
   const [coverError, setCoverError] = useState("");
+  const [editingBrief, setEditingBrief] = useState(false);
+  const [personalBrief, setPersonalBrief] = useState("");
   async function makeCover() {
     if (makingCover) return;
+    const brief = track.coverBrief || personalBrief.trim();
+    if (brief.length < 8) {
+      setEditingBrief(true);
+      return;
+    }
     setMakingCover(true);
     setCoverError("");
     try {
       const data = await jsonRequest("/api/cover", {
-        brief: coverBrief,
+        brief,
         image: coverPhoto,
       });
       onCover(data.artwork);
+      setEditingBrief(false);
     } catch (e) {
       setCoverError((e as Error).message);
     } finally {
@@ -1060,6 +1078,30 @@ function TrackCard({
             <button onClick={() => onCover(null)}>Restore original</button>
           )}
         </div>
+        {editingBrief && (
+          <form
+            className="song-cover-brief"
+            onSubmit={(e) => {
+              e.preventDefault();
+              void makeCover();
+            }}
+          >
+            <label htmlFor={`cover-brief-${track.id}`}>
+              What does this song sound like to you?
+            </label>
+            <textarea
+              id={`cover-brief-${track.id}`}
+              value={personalBrief}
+              onChange={(e) => setPersonalBrief(e.target.value)}
+              placeholder="Skittering drums, strange synths, playful but a little unsettling…"
+              maxLength={1000}
+              rows={3}
+            />
+            <button disabled={personalBrief.trim().length < 8 || makingCover}>
+              Create this song’s cover
+            </button>
+          </form>
+        )}
         {makingCover && (
           <p className="cover-status" role="status">
             Creating original artwork for this song. You can keep listening.

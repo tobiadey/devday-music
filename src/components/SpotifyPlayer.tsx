@@ -21,7 +21,6 @@ type PlaybackEvent = {
 type EmbedController = {
   loadEntity: (uri: string) => void;
   play: () => void;
-  resume: () => void;
   pause: () => void;
   destroy: () => void;
   addListener: (
@@ -91,7 +90,6 @@ export const SpotifyPlayer = forwardRef<SpotifyPlayerHandle, Props>(
     const host = useRef<HTMLDivElement>(null);
     const controller = useRef<EmbedController | null>(null);
     const current = useRef<string | null>(null);
-    const ready = useRef(false);
     const wantsPlay = useRef(false);
     const active = useRef(false);
     const fallbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -119,7 +117,6 @@ export const SpotifyPlayer = forwardRef<SpotifyPlayerHandle, Props>(
     }
     useImperativeHandle(ref, () => ({
       play(id) {
-        const same = current.current === id;
         current.current = id;
         wantsPlay.current = true;
         active.current = true;
@@ -129,14 +126,6 @@ export const SpotifyPlayer = forwardRef<SpotifyPlayerHandle, Props>(
         callbacks.current.onVisible(true);
         callbacks.current.onState(id, false, true);
         clearPending();
-        if (controller.current && ready.current) {
-          if (!same)
-            controller.current.loadEntity(
-              `https://open.spotify.com/track/${id}?theme=0`,
-            );
-          if (same) controller.current.resume();
-          else controller.current.play();
-        }
         fallbackTimer.current = setTimeout(() => {
           wantsPlay.current = false;
           callbacks.current.onState(id, false, false);
@@ -144,6 +133,12 @@ export const SpotifyPlayer = forwardRef<SpotifyPlayerHandle, Props>(
             "If playback hasn't started, tap Play in the Spotify player.",
           );
         }, 8000);
+        // Send both commands in the click stack. Spotify queues them internally
+        // during loading; a second readiness flag can miss an early ready event.
+        if (controller.current) {
+          controller.current.loadEntity(`spotify:track:${id}`);
+          controller.current.play();
+        }
       },
       pause,
       close,
@@ -169,12 +164,10 @@ export const SpotifyPlayer = forwardRef<SpotifyPlayerHandle, Props>(
               }
               controller.current = embed;
               embed.addListener("ready", () => {
-                ready.current = true;
-                if (current.current !== id)
-                  embed.loadEntity(
-                    `https://open.spotify.com/track/${current.current}?theme=0`,
-                  );
-                if (wantsPlay.current) embed.play();
+                if (wantsPlay.current && current.current) {
+                  embed.loadEntity(`spotify:track:${current.current}`);
+                  embed.play();
+                }
               });
               embed.addListener("playback_started", (event) => {
                 if (!active.current) return;
@@ -207,6 +200,11 @@ export const SpotifyPlayer = forwardRef<SpotifyPlayerHandle, Props>(
                   data.isBuffering || wantsPlay.current,
                 );
               });
+              // A cached embed can be ready before listeners are installed.
+              if (wantsPlay.current && current.current) {
+                embed.loadEntity(`spotify:track:${current.current}`);
+                embed.play();
+              }
             },
           );
         })
@@ -232,9 +230,9 @@ export const SpotifyPlayer = forwardRef<SpotifyPlayerHandle, Props>(
 
     return (
       <aside
-        className="spotify-player"
+        className={`spotify-player${visible ? "" : " player-idle"}`}
         aria-label="Spotify player"
-        hidden={!visible}
+        aria-hidden={!visible}
       >
         <button aria-label="Close player" onClick={close}>
           <X size={18} />

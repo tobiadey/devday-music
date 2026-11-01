@@ -1593,8 +1593,13 @@ footer button {
   padding-top: 48px;
   padding-bottom: 45px;
 }
-.spotify-player[hidden] {
-  display: none;
+.spotify-player.player-idle {
+  left: -9999px;
+  right: auto;
+  top: 0;
+  bottom: auto;
+  visibility: hidden;
+  pointer-events: none;
 }
 .player-notice {
   color: #d6dfca;
@@ -1769,5 +1774,74 @@ footer button {
     bottom: 10px;
     font-size: 8px;
     padding: 5px 7px;
+  }
+}
+
+.song-cover-brief {
+  margin: 0 0 16px;
+}
+.song-cover-brief label {
+  display: block;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.song-cover-brief textarea {
+  display: block;
+  width: 100%;
+  min-height: 90px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 10px;
+  color: var(--ink);
+  background: var(--surface);
+  resize: vertical;
+  font: inherit;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.song-cover-brief button {
+  background: transparent;
+  color: var(--accent);
+  font-size: 11px;
+  min-height: 40px;
+  padding: 5px 0;
+}
+
+.results-photo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 0 28px;
+}
+.results-photo img {
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
+  background: #10120f;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.results-photo .eyebrow {
+  font-size: 9px;
+}
+.results-photo p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+.results-photo .text-button {
+  font-size: 11px;
+}
+@media (max-width: 700px) {
+  .results-photo {
+    gap: 14px;
+  }
+  .results-photo img {
+    width: 88px;
+    height: 88px;
   }
 }

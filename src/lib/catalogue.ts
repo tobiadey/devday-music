@@ -56,6 +56,7 @@ export async function resolve(
     return {
       ...fromSpotify(match, candidate.reason),
       reason: candidate.reason,
+      coverBrief: candidate.coverBrief,
     };
   }
   const q = new URLSearchParams({

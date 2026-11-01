@@ -16,7 +16,7 @@
 
 ## Concrete Codex contribution
 
-Codex implemented the application and tested the actual browser journey. It caught a local same-site origin check rejecting legitimate requests, fixed the guard and added a regression test. Further review caught Spotify names entering refinement exclusions; Codex separated provider IDs from the AI prompt and tested that boundary. Thirteen tests and the production build pass. Codex also traced irrelevant Afrobeats suggestions to unchecked genre-search hits and added artist-genre verification with regression coverage. Evidence: [build log](../BUILD_LOG.md), [tests](../tests/music.test.ts), [boundary fix](https://github.com/tobiadey/devday-music/commit/a24fe7a).
+Codex implemented the application and tested the actual browser journey. It caught a local same-site origin check rejecting legitimate requests, fixed the guard and added a regression test. Further review caught Spotify names entering refinement exclusions; Codex separated provider IDs from the AI prompt and tested that boundary. Fifteen tests and the production build pass. Codex also traced irrelevant Afrobeats suggestions to unchecked genre-search hits and added artist-genre verification with regression coverage. Evidence: [build log](../BUILD_LOG.md), [tests](../tests/music.test.ts), [boundary fix](https://github.com/tobiadey/devday-music/commit/a24fe7a).
 
 ## Built today and credits
 

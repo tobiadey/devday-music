@@ -20,10 +20,22 @@ export const mixtapeSchema = z.object({
   title: z.string(),
   description: z.string(),
   tracks: z.array(
-    z.object({ title: z.string(), artist: z.string(), reason: z.string() }),
+    z.object({
+      title: z.string(),
+      artist: z.string(),
+      reason: z.string(),
+      coverBrief: z.string().max(1000),
+    }),
   ),
 });
-export type Candidate = z.infer<typeof mixtapeSchema>["tracks"][number];
+export type Candidate = {
+  title: string;
+  artist: string;
+  reason: string;
+  // Authored independently by the recommendation model before provider lookup.
+  // Spotify-only catalogue discoveries never populate this field.
+  coverBrief?: string;
+};
 export type Track = Candidate & {
   id: string;
   artwork: string | null;
