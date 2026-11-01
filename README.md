@@ -46,7 +46,7 @@ npm run typecheck
 npm run build
 ```
 
-Seven focused tests cover recording verification, exclusions/diversity, input limits, encoded links, encrypted cookie tampering, origin checks and demo rate limits. Local live checks also exercised OpenAI generation, real catalogue lookup, browser playback and synthetic voice transcription. See [BUILD_LOG.md](BUILD_LOG.md) for evidence and limitations.
+Eight focused tests cover recording verification, exclusions/diversity, input limits, encoded links, encrypted cookie tampering, origin checks, Spotify-to-AI exclusion boundaries and demo rate limits. Local live checks also exercised OpenAI generation, real catalogue lookup, browser playback and synthetic voice transcription. See [BUILD_LOG.md](BUILD_LOG.md) for evidence and limitations.
 
 ## Data and limits
 

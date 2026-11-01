@@ -10,6 +10,38 @@ import {
 import { seal, unseal } from "../src/lib/session";
 import { guard, PublicError } from "../src/lib/guard";
 import { NextRequest } from "next/server";
+import { discoveryExclusions } from "../src/lib/discovery-input";
+import type { Track } from "../src/lib/music";
+
+test("Spotify find names never enter AI exclusions during refinement", () => {
+  const track: Track = {
+    id: "a".repeat(22),
+    artist: "Private Spotify Artist",
+    title: "Private Spotify Track",
+    reason: "",
+    artwork: null,
+    preview: null,
+    url: "https://open.spotify.com",
+    spotifyUrl: "https://open.spotify.com",
+    source: "spotify",
+  };
+  const input = discoveryExclusions([
+    track,
+    {
+      ...track,
+      id: "apple-123",
+      artist: "Guest Artist",
+      title: "Guest Track",
+      source: "apple",
+    },
+  ]);
+  assert.deepEqual(input.exclude, ["Guest Artist Guest Track"]);
+  assert.deepEqual(input.spotifyExclusions, [track.id]);
+  assert.equal(
+    JSON.stringify(input.exclude).includes("Private Spotify"),
+    false,
+  );
+});
 
 test("catalogue verification rejects a different song or cover artist", () => {
   const song = { title: "Wildfires", artist: "SAULT", reason: "" };

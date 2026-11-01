@@ -18,6 +18,7 @@ import {
   X,
 } from "lucide-react";
 import type { Mixtape, Track } from "@/lib/music";
+import { discoveryExclusions } from "@/lib/discovery-input";
 
 type Seed = {
   id: string;
@@ -145,9 +146,7 @@ export function Discovery() {
         : await jsonRequest("/api/discover", {
             prompt: nextPrompt,
             direction,
-            exclude: [...(mixtape?.tracks ?? []), ...saved]
-              .map((t) => `${t.artist} ${t.title}`)
-              .slice(0, 40),
+            ...discoveryExclusions([...(mixtape?.tracks ?? []), ...saved]),
           });
       setMixtape(d);
       setHidden([]);

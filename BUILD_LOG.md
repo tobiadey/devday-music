@@ -33,3 +33,8 @@ Add concrete implementation changes, commands run, observed results and limitati
 - Homepage and results checks at 320px, 768px and 1440px: no horizontal overflow, no browser page errors, zero automated accessibility violations with reduced motion enabled.
 - Verified a higher-resolution artwork URL before using it; replaced the improvised store label with Apple's official badge and preview attribution.
 - Founder needs to add the new Spotify callback. Actual Spotify consent/playback and physical-phone behaviour remain unverified.
+
+### Refinement boundary and demo recording
+
+- Review found a mixed-mode edge case: the refinement exclusions could include names from Spotify catalogue selections. Split Spotify IDs from non-Spotify text exclusions; only the latter enter the model. Spotify ID exclusions are applied after catalogue verification. Added a focused regression test. All eight tests, TypeScript and production build pass.
+- Recorded a 45.16-second real public browser journey: typed request, live generation (16 seconds, six confirmed songs), actual preview playing, save/hide and saved finds. No page errors. Recording is silent: no private audio or music audio is bundled in the video.

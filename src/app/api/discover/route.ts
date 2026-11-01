@@ -19,8 +19,8 @@ export async function POST(req: NextRequest) {
       );
     if (!process.env.OPENAI_API_KEY)
       throw new PublicError("Discovery isn't configured yet.", 503);
-    const { prompt, direction, exclude } = parsed.data;
-    // Only independently user-authored preferences enter the model. No Spotify API responses.
+    const { prompt, direction, exclude, spotifyExclusions } = parsed.data;
+    // User-authored preferences and non-Spotify exclusions only. Spotify IDs stay local.
     const { output } = await generateText({
       model: createOpenAI().responses(process.env.OPENAI_MODEL ?? "gpt-6-luna"),
       system:
@@ -37,13 +37,22 @@ export async function POST(req: NextRequest) {
     const settled = await Promise.allSettled(
       candidates.map((c) => resolve(c, token)),
     );
-    const tracks = settled
-      .flatMap((r) => (r.status === "fulfilled" && r.value ? [r.value] : []))
-      .slice(0, 6);
-    if (!tracks.length)
+    const confirmed = settled.flatMap((r) =>
+      r.status === "fulfilled" && r.value ? [r.value] : [],
+    );
+    if (!confirmed.length)
       throw new PublicError(
         "I couldn't confirm those songs in the catalogue. Try another description.",
         502,
+      );
+    const seenSpotify = new Set(spotifyExclusions);
+    const tracks = confirmed
+      .filter((t) => t.source !== "spotify" || !seenSpotify.has(t.id))
+      .slice(0, 6);
+    if (!tracks.length)
+      throw new PublicError(
+        "Those picks overlap with your recent finds. Try a more specific request or a different direction.",
+        422,
       );
     return Response.json(
       {
