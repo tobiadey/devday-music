@@ -118,27 +118,16 @@ export const SpotifyPlayer = forwardRef<SpotifyPlayerHandle, Props>(
     useImperativeHandle(ref, () => ({
       play(id) {
         current.current = id;
-        wantsPlay.current = true;
+        wantsPlay.current = false;
         active.current = true;
         setSelected(id);
         setVisible(true);
         setNotice("");
         callbacks.current.onVisible(true);
-        callbacks.current.onState(id, false, true);
+        callbacks.current.onState(id, false, false);
         clearPending();
-        fallbackTimer.current = setTimeout(() => {
-          wantsPlay.current = false;
-          callbacks.current.onState(id, false, false);
-          setNotice(
-            "If playback hasn't started, tap Play in the Spotify player.",
-          );
-        }, 8000);
-        // Send both commands in the click stack. Spotify queues them internally
-        // during loading; a second readiness flag can miss an early ready event.
-        if (controller.current) {
-          controller.current.loadEntity(`spotify:track:${id}`);
-          controller.current.play();
-        }
+        controller.current?.pause();
+        controller.current?.loadEntity(`spotify:track:${id}`);
       },
       pause,
       close,
