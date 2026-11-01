@@ -6,14 +6,17 @@ export const maxDuration = 60;
 export async function POST(req: NextRequest) {
   try {
     guard(req, "voice", 15);
-    if (Number(req.headers.get("content-length") ?? 0) > 8 * 1024 * 1024)
+    if (
+      Number(req.headers.get("content-length") ?? 0) >
+      3 * 1024 * 1024 + 65536
+    )
       throw new PublicError("Please record a shorter voice note.", 413);
     const form = await req.formData();
     const file = form.get("audio");
     if (
       !(file instanceof File) ||
       !file.size ||
-      file.size > 8 * 1024 * 1024 ||
+      file.size > 3 * 1024 * 1024 ||
       !/^(audio\/(webm|mp4|mpeg|wav|ogg)|video\/webm)/.test(file.type)
     )
       throw new PublicError("Please record a voice note under one minute.");

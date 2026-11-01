@@ -2,6 +2,8 @@
 
 **A song, a mood, a half-formed thought. Find your next favourite.**
 
+**[Try the live app](https://devday-music.vercel.app)** · No account needed for guest discovery.
+
 A fresh music-discovery web app built for DevDay Exchange London, 1 November 2026. `devday-music` is the repository name; Undertone is the working product name.
 
 ## The complete journey
@@ -69,7 +71,7 @@ Codex checked current documentation, wrote the application, caught an origin-che
 
 - [x] Public repository and reproducible setup
 - [x] Local end-to-end guest discovery and preview
-- [ ] Public deployment verified without authentication
+- [x] Public deployment verified without authentication
 - [ ] Spotify callback configured and live sign-in checked
 - [ ] Demo video, maximum 90 seconds
 - [ ] Submit project and team details by 17:00 London

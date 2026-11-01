@@ -242,10 +242,16 @@ export function Discovery() {
         if (timer.current) clearTimeout(timer.current);
         setTranscribing(true);
         try {
+          const clip = new Blob(chunks, { type: rec.mimeType });
+          if (clip.size > 3 * 1024 * 1024) {
+            throw new Error(
+              "That recording is a little too large. Please try a shorter voice note.",
+            );
+          }
           const form = new FormData();
           form.append(
             "audio",
-            new Blob(chunks, { type: rec.mimeType }),
+            clip,
             rec.mimeType.includes("mp4") ? "request.m4a" : "request.webm",
           );
           const r = await fetch("/api/transcribe", {

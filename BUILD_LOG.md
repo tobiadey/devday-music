@@ -25,3 +25,11 @@ Add concrete implementation changes, commands run, observed results and limitati
 - Playwright: real browser discovery exercised; existing live response replayed separately for repeatable UI checks. Preview playback entered its playing state, hiding removed a track, and a saved find survived reload. No page errors or overflow at 1440px and 390px. Actual iPhone microphone/keyboard behaviour is not yet verified.
 - Codex caught the initial local-origin guard rejecting a same-site browser request, fixed it and added a regression test. Accessibility scan also caught mismatched button labels, which were corrected; the final reduced-motion mobile results scan reported zero violations (automated check, not a full accessibility audit).
 - Deployment and live Spotify authorization still pending; callback allowlisting must be configured for the new app URL.
+
+### Public deployment
+
+- The connected Vercel app returned 403 creating a project; the local CLI had no session. The founder completed CLI login. Used that verified account to create a separate `devday-music` project, connect this public Git repository and configure only the needed runtime variables. Auricle was not modified.
+- Public homepage: HTTP 200 without authentication. Live public discovery: HTTP 200 in 13.49 seconds, six confirmed songs, two unconfirmed suggestions omitted. Production URL: https://devday-music.vercel.app.
+- Homepage and results checks at 320px, 768px and 1440px: no horizontal overflow, no browser page errors, zero automated accessibility violations with reduced motion enabled.
+- Verified a higher-resolution artwork URL before using it; replaced the improvised store label with Apple's official badge and preview attribution.
+- Founder needs to add the new Spotify callback. Actual Spotify consent/playback and physical-phone behaviour remain unverified.
