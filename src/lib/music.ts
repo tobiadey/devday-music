@@ -1,16 +1,21 @@
 import { z } from "zod";
 
-export const requestSchema = z.object({
-  prompt: z.string().trim().min(8).max(1000),
-  direction: z
-    .enum(["balanced", "deeper", "warmer", "energy"])
-    .default("balanced"),
-  exclude: z.array(z.string().max(180)).max(40).default([]),
-  spotifyExclusions: z
-    .array(z.string().regex(/^[A-Za-z0-9]{22}$/))
-    .max(40)
-    .default([]),
-});
+export const requestSchema = z
+  .object({
+    prompt: z.string().trim().max(1000).default(""),
+    image: z.string().max(1_800_000).optional(),
+    direction: z
+      .enum(["balanced", "deeper", "warmer", "energy"])
+      .default("balanced"),
+    exclude: z.array(z.string().max(180)).max(40).default([]),
+    spotifyExclusions: z
+      .array(z.string().regex(/^[A-Za-z0-9]{22}$/))
+      .max(40)
+      .default([]),
+  })
+  .refine((value) => value.prompt.length >= 8 || !!value.image, {
+    message: "Describe your sound or add an image.",
+  });
 export const mixtapeSchema = z.object({
   title: z.string(),
   description: z.string(),

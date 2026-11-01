@@ -44,3 +44,21 @@ Add concrete implementation changes, commands run, observed results and limitati
 - Published the 45.16-second H.264 demo as a GitHub release asset; public unauthenticated HEAD requests returned 200 for both repository and video. Inspected opening, preview/results and Codex-caption frames before publishing. No audio stream is included.
 - Production synthetic voice transcription returned HTTP 200 in 2.12 seconds and correctly transcribed the test sentence. Spotify login reaches Spotify's official sign-in screen; actual user consent and callback completion are not yet verified.
 - Added a submission draft with links, credits and the concrete Codex example; team/contact details should go directly into the event form.
+
+### Links and operational notes
+
+- Confirmed the live app link is present in the README and GitHub website field; synchronised the hackathon brief with current app/repo/video/submission links and the exact Spotify callback.
+- Rechecked Spotify's official access rules: standard development mode has five allowlisted accounts per developer app. Undertone and Auricle currently share a developer app; the founder’s dashboard screenshot showed 0/5 manual entries while their owner account worked; any grandfathered allowance is unknown. Guest discovery avoids Spotify sign-in slots.
+- Split completed public-link checks from the still-pending event submission. Founder screenshots subsequently confirmed successful Spotify connection, listening seeds and embed playback.
+
+### Multimodal discovery, focused results and individual covers
+
+- Founder feedback exposed poor Spotify seed matches. Removed random-offset/first-query filling; interleave genre searches, verify candidate artists’ own genres, omit unverifiable artists and exclude known/recent tracks. Added explicit Afrobeats versus broad Afrobeat regression coverage. This fixes a matching failure; improved listener satisfaction still needs a real listening test.
+- Composer and hero now step aside for results, with Edit your request / Back to your songs. Added five rotating light-hearted placeholders and five quick-start pills; rotation pauses on focus and respects reduced motion.
+- Replaced the open-widget-only action with Spotify’s official iframe controller. In a real public embed test, one card click reached the playing/Pause state without a second widget click. Actual playback events drive the UI. Account/browser restrictions can still require the visible widget’s Play button; Premium full-track playback is not established by this guest test.
+- Added browser-resized JPEG/PNG/WebP upload and image-aware structured discovery. A live image-only request returned HTTP 200 in 13.36 seconds with six catalogue-confirmed tracks and reasons grounded in the fixture’s dark blue rainy street and warm windows. Fixture was synthetic, not a private user photo.
+- Added **Make a cover on each song card**, never on the whole selection. OpenAI generated original square artwork successfully, both from text alone (12.5 seconds) and with the user-image reference path (12.02 seconds). New artwork replaces only that card; Restore original is available. Provider artwork remains attributed, and Spotify streaming retains its official widget artwork. Covers are local to the current results view.
+- Cover generation receives only an independent user brief/photo, not Spotify song metadata or artwork. Five cover requests/hour/IP/instance is best-effort demo protection; no automatic generation retries.
+- `npm test`: 13 tests passed, including image-only validation, image bounds/signatures and three Spotify matching regressions. TypeScript and production build passed. Browser verification and production deployment results recorded below after completion.
+
+- Browser regression checks passed at 320, 390, 768 and 1440 pixels with reduced motion: no overflow, no page errors, zero automated accessibility violations. Replayed real smoke-test outputs for repeatability; verified photo-only submission, hidden composer on results, per-song replacement without changing neighbours, restore, clean cover request payload, and artwork surviving edit/return. An initial missing/incorrect heading hierarchy was caught by the scan and corrected.

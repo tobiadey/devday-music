@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { spotifyToken } from "@/lib/session";
-import { spotifyGet, SpotifyTrack, fromSpotify } from "@/lib/catalogue";
-import { diverse } from "@/lib/music";
+import { spotifyGet, SpotifyTrack } from "@/lib/catalogue";
+import { findSpotifyNeighbours } from "@/lib/spotify-discovery";
 import { guard, failure, PublicError } from "@/lib/guard";
 
 export async function POST(req: NextRequest) {
@@ -28,43 +28,30 @@ export async function POST(req: NextRequest) {
       throw new PublicError(
         "Spotify doesn't have a genre for this artist. Try another artist or describe your sound instead.",
       );
-    // Catalogue-only discovery: Spotify content is never passed to an AI model.
-    const results = await Promise.allSettled(
-      genres.map((genre) =>
-        spotifyGet(
-          `/search?${new URLSearchParams({ q: `genre:"${genre}"`, type: "track", limit: "10", offset: String(Math.floor(Math.random() * 4) * 10) })}`,
-          token,
-        ),
-      ),
-    );
-    const known = new Set((top.items as SpotifyTrack[]).map((t) => t.id));
-    const candidates = results
-      .flatMap((r) =>
-        r.status === "fulfilled"
-          ? ((r.value.tracks?.items as SpotifyTrack[]) ?? [])
-          : [],
-      )
-      .filter(
-        (t) =>
-          !known.has(t.id) && !t.artists.some((a) => a.id === body.artistId),
-      );
-    const tracks = diverse(
-      candidates.map((t) =>
-        fromSpotify(
-          t,
-          `Found through ${genres[0]}, shared with ${artist.name}.`,
-        ),
-      ),
+    const excluded = Array.isArray(body.excludeIds)
+      ? body.excludeIds
+          .filter(
+            (id: unknown): id is string =>
+              typeof id === "string" && /^[A-Za-z0-9]{22}$/.test(id),
+          )
+          .slice(0, 40)
+      : [];
+    // Verify candidate artists' own genre metadata. No Spotify content enters AI.
+    const tracks = await findSpotifyNeighbours(
+      artist,
+      top.items as SpotifyTrack[],
+      (path) => spotifyGet(path, token),
+      excluded,
     );
     if (!tracks.length)
       throw new PublicError(
-        "No fresh matches came back. Try another artist.",
+        "I couldn't verify strong matches for this artist. Try another seed or describe the sound you want.",
         502,
       );
     return Response.json(
       {
         title: `Beyond ${artist.name}`,
-        description: `Exploring ${genres.join(", ")}. A catalogue selection based on shared genres.`,
+        description: `A selection from artists with verified genre connections to ${artist.name}.`,
         tracks,
         unavailable: 0,
       },
