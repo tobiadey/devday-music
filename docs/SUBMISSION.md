@@ -12,7 +12,7 @@
 
 - [Live app](https://devday-music.vercel.app)
 - [Public repository and setup](https://github.com/tobiadey/devday-music)
-- [45-second demo video](https://github.com/tobiadey/devday-music/releases/download/hackathon-demo/undertone-demo.mp4)
+- [47-second demo video](https://github.com/tobiadey/devday-music/releases/download/hackathon-demo/undertone-demo.mp4)
 
 ## Concrete Codex contribution
 

@@ -62,3 +62,9 @@ Add concrete implementation changes, commands run, observed results and limitati
 - `npm test`: 13 tests passed, including image-only validation, image bounds/signatures and three Spotify matching regressions. TypeScript and production build passed. Browser verification and production deployment results recorded below after completion.
 
 - Browser regression checks passed at 320, 390, 768 and 1440 pixels with reduced motion: no overflow, no page errors, zero automated accessibility violations. Replayed real smoke-test outputs for repeatability; verified photo-only submission, hidden composer on results, per-song replacement without changing neighbours, restore, clean cover request payload, and artwork surviving edit/return. An initial missing/incorrect heading hierarchy was caught by the scan and corrected.
+
+### Production verification of the multimodal pass
+
+- Production deployment `8f77937` reached READY. A real unauthenticated public-browser journey returned six confirmed songs from the synthetic photo, generated and displayed original artwork for just the selected song, played a preview and saved the song. No browser page errors. Vercel reported no grouped runtime errors in the selected ten-minute window.
+- Refreshed the public demo: 47.24 seconds, H.264, 837 KB, silent. Inspected opening, generated-cover and final Codex-contribution frames. Updated the release asset at the existing public demo URL and the README screenshot. Image input and cover output are synthetic/original; no private photos, listening histories or music audio are included.
+- Updated README setup/limits, submission draft, GitHub website link and the Obsidian hackathon brief. Event-form submission/team details remain outstanding.

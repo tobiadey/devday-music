@@ -2,7 +2,7 @@
 
 **A photo, a mood, a half-formed thought. Find your next favourite.**
 
-**[Try the live app](https://devday-music.vercel.app)** · **[Watch the 45-second demo](https://github.com/tobiadey/devday-music/releases/download/hackathon-demo/undertone-demo.mp4)**
+**[Try the live app](https://devday-music.vercel.app)** · **[Watch the 47-second demo](https://github.com/tobiadey/devday-music/releases/download/hackathon-demo/undertone-demo.mp4)**
 
 No account needed for guest discovery.
 
@@ -94,7 +94,7 @@ Codex checked current documentation, wrote the application, caught an origin-che
 - [x] Local end-to-end guest discovery and preview
 - [x] Public deployment verified without authentication
 - [x] Spotify callback and signed-in listening/player flow confirmed by the founder; one-click embed preview also checked separately
-- [x] Demo video, 45 seconds, public download checked
+- [x] Demo video, 47 seconds, public download checked
 - [ ] Submit project and team details by 17:00 London
 
 Official references: [OpenAI docs](https://developers.openai.com/), [Codex](https://developers.openai.com/codex), [Spotify PKCE](https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow), [Spotify 2026 migration](https://developer.spotify.com/documentation/web-api/tutorials/february-2026-migration-guide), [Spotify policy](https://developer.spotify.com/policy), [Apple catalogue API](https://performance-partners.apple.com/search-api).
