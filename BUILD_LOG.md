@@ -9,3 +9,5 @@
 - Checking Spotify's current API access, playback and AI-use constraints before implementation.
 
 Add concrete implementation changes, commands run, observed results and limitations here as the build progresses. Do not claim tests or deployments that have not happened.
+- Verified Spotify's current development-mode constraints: Premium app owner, up to five allowlisted users. Its Developer Policy prohibits ingesting Spotify content into AI models and restricts voice control. This changes the data boundary: user-authored preferences must remain separate from Spotify content; Spotify history must not be sent to an AI service.
+- Spotify integration access and input interpretation are being confirmed before implementation. The public repository is documentation-only at this checkpoint.
