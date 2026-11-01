@@ -38,3 +38,9 @@ Add concrete implementation changes, commands run, observed results and limitati
 
 - Review found a mixed-mode edge case: the refinement exclusions could include names from Spotify catalogue selections. Split Spotify IDs from non-Spotify text exclusions; only the latter enter the model. Spotify ID exclusions are applied after catalogue verification. Added a focused regression test. All eight tests, TypeScript and production build pass.
 - Recorded a 45.16-second real public browser journey: typed request, live generation (16 seconds, six confirmed songs), actual preview playing, save/hide and saved finds. No page errors. Recording is silent: no private audio or music audio is bundled in the video.
+
+### Public artifact checks
+
+- Published the 45.16-second H.264 demo as a GitHub release asset; public unauthenticated HEAD requests returned 200 for both repository and video. Inspected opening, preview/results and Codex-caption frames before publishing. No audio stream is included.
+- Production synthetic voice transcription returned HTTP 200 in 2.12 seconds and correctly transcribed the test sentence. Spotify login reaches Spotify's official sign-in screen; actual user consent and callback completion are not yet verified.
+- Added a submission draft with links, credits and the concrete Codex example; team/contact details should go directly into the event form.

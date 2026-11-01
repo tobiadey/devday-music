@@ -2,7 +2,11 @@
 
 **A song, a mood, a half-formed thought. Find your next favourite.**
 
-**[Try the live app](https://devday-music.vercel.app)** · No account needed for guest discovery.
+**[Try the live app](https://devday-music.vercel.app)** · **[Watch the 45-second demo](https://github.com/tobiadey/devday-music/releases/download/hackathon-demo/undertone-demo.mp4)**
+
+No account needed for guest discovery.
+
+![Undertone desktop interface](docs/undertone.png)
 
 A fresh music-discovery web app built for DevDay Exchange London, 1 November 2026. `devday-music` is the repository name; Undertone is the working product name.
 
@@ -67,13 +71,15 @@ Design used the [AdeyStudios web-design skill](https://github.com/AdeyStudios/sk
 
 Codex checked current documentation, wrote the application, caught an origin-check failure during live testing, added regression coverage, and exercised the real discovery/preview flow. [Build log](BUILD_LOG.md).
 
+[Submission draft](docs/SUBMISSION.md) includes the product description, links and Codex example.
+
 ## Submission status
 
 - [x] Public repository and reproducible setup
 - [x] Local end-to-end guest discovery and preview
 - [x] Public deployment verified without authentication
 - [ ] Spotify callback configured and live sign-in checked
-- [ ] Demo video, maximum 90 seconds
+- [x] Demo video, 45 seconds, public download checked
 - [ ] Submit project and team details by 17:00 London
 
 Official references: [OpenAI docs](https://developers.openai.com/), [Codex](https://developers.openai.com/codex), [Spotify PKCE](https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow), [Spotify 2026 migration](https://developer.spotify.com/documentation/web-api/tutorials/february-2026-migration-guide), [Spotify policy](https://developer.spotify.com/policy), [Apple catalogue API](https://performance-partners.apple.com/search-api).
