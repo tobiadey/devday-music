@@ -10,3 +10,6 @@ coverage/
 .DS_Store
 .data/
 uploads/
+playwright-report/
+test-results/
+*.tsbuildinfo
