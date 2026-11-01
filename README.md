@@ -2,7 +2,7 @@
 
 **Find your next favourite song, starting with a feeling or a photo.**
 
-[Open the app](https://devday-music.vercel.app/) · [Watch the 47-second demo](https://github.com/tobiadey/devday-music/releases/download/hackathon-demo/undertone-demo.mp4) · [Build log](BUILD_LOG.md)
+[Open the app](https://devday-music.vercel.app/) · [Watch the demo](https://drive.google.com/file/d/1FPBEF3NEoOqLH4QpxAfrH36T9VlPr5tz/view?usp=sharing) · [Codex-made demo (47 seconds)](https://github.com/tobiadey/devday-music/releases/download/hackathon-demo/undertone-demo.mp4) · [Build log](BUILD_LOG.md)
 
 ![Undertone interface](docs/undertone.png)
 
